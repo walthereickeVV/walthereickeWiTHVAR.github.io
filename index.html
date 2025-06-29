@@ -1,0 +1,2378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProBron.by | Премиум защита техники</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Orbitron:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --primary: #4a00e0;
+            --secondary: #8e2de2;
+            --accent: #ff6b4a;
+            --accent-light: #ff9d87;
+            --dark: #0c0c1a;
+            --darker: #070712;
+            --light: #f8f9fa;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-accent: linear-gradient(135deg, var(--accent), var(--accent-light));
+            --glass: rgba(20, 20, 40, 0.7);
+            --glass-border: rgba(74, 0, 224, 0.4);
+            --shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --nano-gradient: linear-gradient(135deg, #00f2fe, #4facfe);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 0, 224, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(142, 45, 226, 0.1) 0%, transparent 25%);
+            position: relative;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(74, 0, 224, 0.05) 0%, transparent 15%),
+                radial-gradient(circle at 80% 70%, rgba(142, 45, 226, 0.05) 0%, transparent 15%);
+            z-index: -1;
+        }
+        
+        /* Шапка сайта */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(12, 12, 26, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: var(--transition);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        header.scrolled {
+            padding: 15px 5%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+            transition: transform 0.4s ease;
+            filter: drop-shadow(0 0 10px rgba(142, 45, 226, 0.5));
+        }
+        
+        .logo span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .logo img:hover {
+            transform: rotate(5deg) scale(1.1);
+        }
+        
+        nav {
+            display: flex;
+            gap: 35px;
+        }
+        
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 8px 0;
+            transition: var(--transition);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient);
+            transition: var(--transition);
+            border-radius: 3px;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        nav a:hover {
+            color: #b182f0;
+        }
+        
+        .social-header {
+            display: flex;
+            gap: 15px;
+            margin-right: 25px;
+        }
+        
+        .social-header a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background: var(--glass);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.3rem;
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+        }
+        
+        .social-header a:hover {
+            background: var(--gradient);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .shock-button {
+            background: var(--gradient);
+            border: none;
+            color: white;
+            padding: 16px 35px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+            z-index: 1;
+        }
+        
+        .shock-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-accent);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .shock-button:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .shock-button:hover::before {
+            opacity: 1;
+        }
+        
+        .shock-button i {
+            transition: transform 0.4s ease;
+        }
+        
+        .shock-button:hover i {
+            transform: scale(1.3);
+        }
+        
+        /* Главный экран - ИСПРАВЛЕННЫЙ ДЛЯ ВИДИМОСТИ ЗАГОЛОВКА */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+            position: relative;
+            padding: 40px;
+            border-radius: 30px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            line-height: 1.1;
+            text-transform: uppercase;
+            background: var(--nano-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            text-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero .nano-text {
+            display: block;
+            font-size: 4rem;
+            margin-bottom: 10px;
+            background: var(--nano-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.7));
+        }
+        
+        .hero .protection-text {
+            display: block;
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #fff, #b182f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(142, 45, 226, 0.5));
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #8e2de2;
+            color: #8e2de2;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(142, 45, 226, 0.15);
+        }
+        
+        /* ИНТЕРАКТИВНАЯ КАРТА ЗАЩИТЫ - ПЕРЕРАБОТАННАЯ */
+        .protection-map {
+            perspective: 1200px;
+            margin: 100px 0;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .phone-layers {
+            position: relative;
+            width: 300px;
+            height: 500px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            transition: transform 0.8s ease, opacity 0.8s ease, box-shadow 0.4s ease;
+            backface-visibility: hidden;
+            cursor: pointer;
+            overflow: hidden;
+            transform-origin: center;
+        }
+        
+        .layer-info {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 15px;
+            max-width: 80%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .layer:hover .layer-info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .layer-1 { 
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            transform: translateZ(0px);
+            z-index: 1;
+        }
+        
+        .layer-2 { 
+            background: linear-gradient(45deg, rgba(74, 0, 224, 0.8), rgba(106, 0, 255, 0.6));
+            transform: translateZ(40px);
+            z-index: 2;
+        }
+        
+        .layer-3 { 
+            background: linear-gradient(45deg, rgba(0, 242, 254, 0.7), rgba(79, 172, 254, 0.5));
+            transform: translateZ(80px);
+            z-index: 3;
+        }
+        
+        .layer-4 { 
+            background: linear-gradient(45deg, rgba(255, 107, 74, 0.6), rgba(255, 157, 135, 0.4));
+            transform: translateZ(120px);
+            z-index: 4;
+        }
+        
+        .layer.active {
+            transform: translateZ(100px) scale(1.05);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.2);
+            z-index: 10;
+        }
+        
+        .layer h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .layer p {
+            font-size: 1.1rem;
+            max-width: 250px;
+            opacity: 0.9;
+        }
+        
+        .layer-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 20;
+            background: rgba(20, 20, 40, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .layer-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .layer-btn:hover {
+            background: var(--gradient);
+            transform: translateY(-5px);
+        }
+        
+        .auto-show-btn {
+            width: auto;
+            padding: 0 20px;
+            border-radius: 50px;
+        }
+        
+        /* Анимации для слоев */
+        @keyframes layerPulse {
+            0% { box-shadow: 0 0 0 0 rgba(142, 45, 226, 0.5); }
+            70% { box-shadow: 0 0 0 20px rgba(142, 45, 226, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(142, 45, 226, 0); }
+        }
+        
+        .pulse-layer {
+            animation: layerPulse 2s infinite;
+        }
+        
+        @keyframes floatLayer {
+            0% { transform: translateZ(var(--z)) translateY(0); }
+            50% { transform: translateZ(var(--z)) translateY(-15px); }
+            100% { transform: translateZ(var(--z)) translateY(0); }
+        }
+        
+        .floating-layer {
+            animation: floatLayer 4s ease-in-out infinite;
+        }
+        
+        /* Шок-эффект при открытии */
+        @keyframes shockWave {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .shock-effect {
+            animation: shockWave 1.5s ease-out forwards;
+        }
+        
+        /* Эффект частиц */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            opacity: 0;
+        }
+        
+        /* Блок услуг */
+        .services {
+            padding: 130px 5% 100px;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 80px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 800;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: var(--gradient);
+            border-radius: 5px;
+        }
+        
+        .devices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        
+        .device-card {
+            background: var(--glass);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            z-index: 1;
+        }
+        
+        .device-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient);
+            z-index: -1;
+            border-radius: 25px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .device-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        .device-card:hover::before {
+            opacity: 1;
+        }
+        
+        .nano-tech-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        .device-card h3 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #b182f0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 20;
+            padding-right: 100px;
+        }
+        
+        .device-card h3 i {
+            font-size: 2.2rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(74, 0, 224, 0.2);
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+        }
+        
+        .service-list {
+            list-style: none;
+            margin-bottom: 35px;
+        }
+        
+        .service-list li {
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+        
+        .service-list li:hover {
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateX(5px);
+        }
+        
+        .service-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .price {
+            color: var(--accent-light);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        /* Технологии */
+        .technology {
+            padding: 130px 5% 100px;
+            text-align: center;
+            position: relative;
+            background: rgba(10, 8, 24, 0.6);
+            backdrop-filter: blur(5px);
+        }
+        
+        .tech-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .tech-info {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .tech-info h2 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .tech-info p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .tech-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .feature-card {
+            background: var(--glass);
+            padding: 35px 25px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            max-width: 270px;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+        
+        .feature-card i {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover i {
+            transform: scale(1.2);
+        }
+        
+        .feature-card h4 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #e0d6f5;
+        }
+        
+        .feature-card p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        
+        /* Скидка */
+        .discount {
+            padding: 150px 5% 130px;
+            background: var(--gradient);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+        }
+        
+        .discount::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 25%);
+        }
+        
+        .discount-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .discount h2 {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .discount p {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0;
+        }
+        
+        .timer-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 100px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timer-value {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .timer-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+        
+        /* Футер */
+        footer {
+            padding: 100px 5% 50px;
+            background: var(--darker);
+            position: relative;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            max-width: 1300px;
+            margin: 0 auto 60px;
+        }
+        
+        .footer-column {
+            position: relative;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #b182f0;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+            padding: 8px 0;
+        }
+        
+        .footer-links a i {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(74, 0, 224, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: #b182f0;
+            transform: translateX(8px);
+        }
+        
+        .footer-links a:hover i {
+            background: var(--gradient);
+            color: white;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+        }
+        
+        .contact-item i {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(74, 0, 224, 0.1);
+            border-radius: 50%;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .contact-item:hover i {
+            background: var(--gradient);
+            transform: scale(1.1);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--glass);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.4rem;
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .social-icons a:hover {
+            background: var(--gradient);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 50px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            opacity: 0.7;
+            font-size: 1.1rem;
+        }
+        
+        /* 3D модель телефона */
+        #phone-3d-container {
+            width: 100%;
+            height: 500px;
+            margin: 50px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            background: var(--dark);
+            border: 1px solid var(--glass-border);
+        }
+        
+        #phone-3d-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        .ar-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+        
+        .ar-button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+        
+        .ar-button:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+        
+        .film-type {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            background: var(--glass);
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: flex;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .film-type button {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .film-type button.active {
+            background: var(--gradient);
+        }
+        
+        .film-type button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Анимации */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        .floating {
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(142, 45, 226, 0.7); }
+            70% { box-shadow: 0 0 0 25px rgba(142, 45, 226, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(142, 45, 226, 0); }
+        }
+        
+        .pulse {
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes apply-film {
+            0% { transform: translateY(-100px) rotateX(90deg); opacity: 0; }
+            100% { transform: translateY(0) rotateX(0); opacity: 1; }
+        }
+        
+        .applying-film {
+            animation: apply-film 1.5s ease-out forwards;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1100px) {
+            .hero .nano-text {
+                font-size: 3.2rem;
+            }
+            
+            .hero .protection-text {
+                font-size: 2.8rem;
+            }
+            
+            .devices-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero .nano-text {
+                font-size: 2.8rem;
+            }
+            
+            .hero .protection-text {
+                font-size: 2.5rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            .logo img {
+                height: 45px;
+            }
+            
+            .social-header {
+                display: none;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .device-card h3 {
+                padding-right: 0;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .film-type {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px;
+                top: 10px;
+                right: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding-top: 100px;
+            }
+            
+            .hero .nano-text {
+                font-size: 2.3rem;
+                line-height: 1.2;
+            }
+            
+            .hero .protection-text {
+                font-size: 2.0rem;
+                line-height: 1.2;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+            
+            .discount h2 {
+                font-size: 2.8rem;
+            }
+            
+            .discount p {
+                font-size: 1.2rem;
+            }
+            
+            .timer {
+                flex-wrap: wrap;
+            }
+            
+            .timer-item {
+                min-width: 80px;
+                padding: 15px;
+            }
+            
+            .timer-value {
+                font-size: 2.5rem;
+            }
+            
+            .nano-tech-badge {
+                font-size: 0.8rem;
+                padding: 5px 15px;
+                top: 15px;
+                right: 15px;
+            }
+            
+            .device-card h3 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding-top: 90px;
+            }
+            
+            .hero .nano-text {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            .hero .protection-text {
+                font-size: 1.8rem;
+                line-height: 1.2;
+            }
+            
+            .hero-content {
+                padding: 30px 20px;
+            }
+            
+            .device-card {
+                padding: 30px;
+            }
+            
+            .feature-card {
+                padding: 25px 20px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .discount {
+                clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+                padding: 100px 5% 80px;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .hero .nano-text {
+                font-size: 1.8rem;
+            }
+            
+            .hero .protection-text {
+                font-size: 1.6rem;
+            }
+        }
+        
+        /* Новые элементы */
+        .crash-test {
+            width: 100%;
+            height: 600px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            margin: 80px 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .crash-test-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            z-index: 2;
+        }
+        
+        .crash-test h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff6b4a, #ff9d87);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .crash-test p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+        
+        .test-area {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .phone-model-crash {
+            width: 150px;
+            height: 250px;
+            background: #333;
+            border-radius: 15px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.5s ease;
+            cursor: pointer;
+        }
+        
+        .impact-effect {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,107,74,0.8) 0%, rgba(255,107,74,0) 70%);
+            display: none;
+        }
+        
+        .nano-hologram {
+            width: 100%;
+            height: 500px;
+            background: rgba(10, 8, 24, 0.8);
+            border-radius: 20px;
+            margin: 80px 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hologram-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 30px;
+            max-width: 600px;
+        }
+        
+        .hologram-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hologram-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(0, 242, 254, 0.1) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(0, 242, 254, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+        
+        .hologram-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.2) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: moveDots 20s linear infinite;
+        }
+        
+        @keyframes moveDots {
+            0% { background-position: 0 0; }
+            100% { background-position: 500px 500px; }
+        }
+        
+        .hologram-structure {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: rgba(0, 242, 254, 0.05);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 100px rgba(0, 242, 254, 0.2),
+                inset 0 0 50px rgba(0, 242, 254, 0.1);
+            animation: rotateHologram 30s linear infinite;
+        }
+        
+        @keyframes rotateHologram {
+            0% { transform: translate(-50%, -50%) rotateX(0) rotateY(0); }
+            100% { transform: translate(-50%, -50%) rotateX(360deg) rotateY(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header id="header">
+        <div class="logo">
+            <img src="logo.png" alt="ProBron Logo">
+            <span>ProBron.by</span>
+        </div>
+        <nav>
+            <a href="#services">Услуги</a>
+            <a href="#technology">Технологии</a>
+            <a href="#ar-section">AR-примерка</a>
+            <a href="#discount">Скидки</a>
+            <a href="#contact">Контакты</a>
+        </nav>
+        <div class="social-header">
+            <a href="https://instagram.com/probron.by" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" target="_blank">
+                <i class="fab fa-telegram"></i>
+            </a>
+            <a href="#" target="_blank">
+                <i class="fab fa-vk"></i>
+            </a>
+        </div>
+        <button class="shock-button" id="ar-button">
+            <i class="fas fa-mobile-alt"></i> AR-примерка
+        </button>
+    </header>
+    
+    <!-- Главный экран -->
+    <section class="hero">
+        <div class="hero-content" data-animate>
+            <h1>
+                <span class="nano-text">NANO-ТЕХНОЛОГИЯ</span>
+                <span class="protection-text">ЗАЩИТЫ ВАШЕЙ ТЕХНИКИ</span>
+            </h1>
+            <p>Премиум бронепленка, которая выдерживает экстремальные нагрузки и сохраняет ваши устройства в идеальном состоянии</p>
+            <div class="buttons">
+                <button class="shock-button pulse">
+                    <i class="fas fa-bolt"></i> Получить скидку -20%
+                </button>
+                <button class="shock-button btn-secondary">
+                    <i class="fas fa-play-circle"></i> Смотреть краш-тест
+                </button>
+            </div>
+        </div>
+        
+        <!-- Интерактивная карта защиты - ПЕРЕРАБОТАННАЯ -->
+        <div class="protection-map">
+            <div class="phone-layers" id="phone-layers">
+                <div class="layer layer-1 floating-layer" style="--z: 0px" data-layer="1">
+                    <h3><i class="fas fa-mobile-alt"></i> Ваше устройство</h3>
+                    <p>Экран и корпус</p>
+                    <div class="layer-info">
+                        <p>Базовый слой, который мы защищаем от повреждений</p>
+                    </div>
+                </div>
+                <div class="layer layer-2 floating-layer" style="--z: 40px" data-layer="2">
+                    <h3><i class="fas fa-shield-alt"></i> Защитная пленка</h3>
+                    <p>Базовый слой защиты</p>
+                    <div class="layer-info">
+                        <p>Высококачественная полимерная пленка толщиной 0.33 мм</p>
+                    </div>
+                </div>
+                <div class="layer layer-3 floating-layer" style="--z: 80px" data-layer="3">
+                    <h3><i class="fas fa-gem"></i> 9H Защита</h3>
+                    <p>Стойкость к царапинам</p>
+                    <div class="layer-info">
+                        <p>Твердость 9H по шкале Мооса - максимальная защита от царапин</p>
+                    </div>
+                </div>
+                <div class="layer layer-4 floating-layer" style="--z: 120px" data-layer="4">
+                    <h3><i class="fas fa-atom"></i> Nano-покрытие</h3>
+                    <p>Гидрофобный слой</p>
+                    <div class="layer-info">
+                        <p>Нано-частицы создают невидимый барьер против жидкостей и загрязнений</p>
+                    </div>
+                </div>
+                
+                <div class="particles" id="particles-container"></div>
+                
+                <div class="layer-controls">
+                    <button class="layer-btn" id="layer-down">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button class="layer-btn" id="layer-up">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="layer-btn auto-show-btn" id="auto-show">
+                        <i class="fas fa-play"></i> Автопоказ
+                    </button>
+                    <button class="layer-btn" id="shock-effect">
+                        <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Технологии -->
+    <section class="technology" id="technology">
+        <h2 class="section-title" data-animate>Наши Технологии</h2>
+        <div class="tech-container">
+            <div class="tech-info" data-animate>
+                <h2>Глянцевая и матовая бронепленка</h2>
+                <p>Бронепленка ProBron - это инновационный полимерный материал, разработанный специально для защиты цифровой техники. Не собирает под собой пыль и грязь, средний срок службы 12-18 месяцев.</p>
+                <p>Минимизирует риски повреждения устройства. По результатам наших краш-тестов в 94% случаев устройство остается целым.</p>
+                
+                <div class="tech-features">
+                    <div class="feature-card" data-animate>
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>Защита 9H</h4>
+                        <p>Максимальная стойкость к царапинам</p>
+                    </div>
+                    <div class="feature-card" data-animate>
+                        <i class="fas fa-sync-alt"></i>
+                        <h4>Легкая замена</h4>
+                        <p>Без следов и повреждений</p>
+                    </div>
+                    <div class="feature-card" data-animate>
+                        <i class="fas fa-fingerprint"></i>
+                        <h4>Oleophobic слой</h4>
+                        <p>Отталкивает отпечатки пальцев</p>
+                    </div>
+                    <div class="feature-card" data-animate>
+                        <i class="fas fa-bolt"></i>
+                        <h4>Нанопокрытие</h4>
+                        <p>Кристальная прозрачность</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Голограмма нано-технологий -->
+        <div class="nano-hologram">
+            <div class="hologram-grid"></div>
+            <div class="hologram-dots"></div>
+            <div class="hologram-structure"></div>
+            
+            <div class="hologram-content">
+                <h2>Nano-структура защиты</h2>
+                <p>Наше покрытие состоит из миллионов нано-частиц, образующих защитную сетку. Каждая частица имеет алмазоподобную структуру, обеспечивающую максимальную прочность.</p>
+                <button class="shock-button">
+                    <i class="fas fa-microscope"></i> Увеличить структуру
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Интерактивная 3D модель -->
+    <section class="technology" id="ar-section">
+        <h2 class="section-title" data-animate>AR-примерка пленки</h2>
+        <div class="tech-container">
+            <div class="tech-info" data-animate>
+                <p>Вращайте телефон и выберите тип пленки, чтобы увидеть, как она будет смотреться на вашем устройстве</p>
+                
+                <div id="phone-3d-container">
+                    <canvas id="phone-3d-canvas"></canvas>
+                    <div class="film-type">
+                        <button class="active" data-film="glossy">Глянцевая</button>
+                        <button data-film="matte">Матовая</button>
+                        <button data-film="privacy">Защита приватности</button>
+                        <button data-film="sapphire">Сапфировая</button>
+                    </div>
+                    <div class="ar-controls">
+                        <button class="ar-button" id="reset-view">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="ar-button" id="ar-view">
+                            <i class="fas fa-mobile-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Интерактивный краш-тест -->
+    <section class="technology">
+        <div class="crash-test">
+            <div class="crash-test-content">
+                <h2>Интерактивный краш-тест</h2>
+                <p>Нажмите на телефон, чтобы проверить его прочность с нашим покрытием</p>
+                
+                <div class="test-area">
+                    <div class="phone-model-crash" id="crash-phone">
+                        <span>ProBron NanoTech</span>
+                    </div>
+                    <div class="impact-effect" id="impact-effect"></div>
+                </div>
+                
+                <button class="shock-button" id="reset-test">
+                    <i class="fas fa-redo"></i> Повторить тест
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Услуги -->
+    <section class="services" id="services">
+        <h2 class="section-title" data-animate>Наши Услуги</h2>
+        <div class="devices-grid">
+            <!-- Смартфоны -->
+            <div class="device-card" data-animate>
+                <span class="nano-tech-badge">NANO-TECH</span>
+                <h3><i class="fas fa-mobile-alt"></i>Смартфоны</h3>
+                <ul class="service-list">
+                    <li>Экран <span class="price">35 byn</span></li>
+                    <li>Корпус (без граней) <span class="price">35 byn</span></li>
+                    <li>Корпус (с гранями) <span class="price">45 byn</span></li>
+                    <li>Полная оклейка 360° <span class="price">75 byn</span></li>
+                    <li>Грани <span class="price">20 byn</span></li>
+                    <li>Камера <span class="price">15 byn</span></li>
+                </ul>
+                <button class="shock-button">
+                    <i class="fas fa-cog"></i> Конфигуратор
+                </button>
+            </div>
+            
+            <!-- Ноутбуки -->
+            <div class="device-card" data-animate>
+                <span class="nano-tech-badge">NANO-TECH</span>
+                <h3><i class="fas fa-laptop"></i>Ноутбуки</h3>
+                <ul class="service-list">
+                    <li>1 элемент <span class="price">90 byn</span></li>
+                    <li>2 элемента <span class="price">165 byn</span></li>
+                    <li>Область тачпада <span class="price">60 byn</span></li>
+                    <li>Грани <span class="price">40 byn</span></li>
+                </ul>
+                <button class="shock-button">
+                    <i class="fas fa-cog"></i> Конфигуратор
+                </button>
+            </div>
+            
+            <!-- Планшеты -->
+            <div class="device-card" data-animate>
+                <span class="nano-tech-badge">NANO-TECH</span>
+                <h3><i class="fas fa-tablet-alt"></i>Планшеты</h3>
+                <ul class="service-list">
+                    <li>Экран <span class="price">65 byn</span></li>
+                    <li>Грани <span class="price">30 byn</span></li>
+                    <li>Камера <span class="price">15 byn</span></li>
+                    <li>Корпус (без граней) <span class="price">60 byn</span></li>
+                    <li>Корпус (с гранями) <span class="price">80 byn</span></li>
+                    <li>Полная оклейка 360° <span class="price">140 byn</span></li>
+                </ul>
+                <button class="shock-button">
+                    <i class="fas fa-cog"></i> Конфигуратор
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Скидка -->
+    <section class="discount" id="discount">
+        <div class="discount-content" data-animate>
+            <h2>Заберите скидку -20%</h2>
+            <p>Оставьте заявку сейчас и получите дополнительные гарантии на защитное покрытие</p>
+            
+            <div class="timer">
+                <div class="timer-item">
+                    <div class="timer-value" id="hours">12</div>
+                    <div class="timer-label">Часов</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-value" id="minutes">45</div>
+                    <div class="timer-label">Минут</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-value" id="seconds">30</div>
+                    <div class="timer-label">Секунд</div>
+                </div>
+            </div>
+            
+            <button class="shock-button pulse">
+                <i class="fas fa-gift"></i> Получить скидку
+            </button>
+        </div>
+    </section>
+    
+    <!-- Футер -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-column" data-animate>
+                <h3>ProBron.by</h3>
+                <p>Инновационная защита ваших устройств с использованием нанотехнологий. Гарантия качества и надежности.</p>
+                <div class="social-icons">
+                    <a href="https://instagram.com/probron.by" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" target="_blank">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="#" target="_blank">
+                        <i class="fab fa-vk"></i>
+                    </a>
+                    <a href="#" target="_blank">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-column" data-animate>
+                <h3>Услуги</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i>Защита смартфонов</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i>Защита ноутбуков</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i>Защита планшетов</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i>Защита часов</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i>Защита игровых консолей</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column" data-animate>
+                <h3>Контакты</h3>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>г. Солигорск, ул. Пробронная, 123</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+375 (29) 123-45-67</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@probron.by</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Пн-Пт: 10:00 - 20:00, Сб-Вс: 11:00 - 18:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 ProBron.by - Все права защищены. Nano-технологии защиты ваших устройств.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Таймер для скидки
+        function updateTimer() {
+            const hoursElement = document.getElementById('hours');
+            const minutesElement = document.getElementById('minutes');
+            const secondsElement = document.getElementById('seconds');
+            
+            if (!hoursElement || !minutesElement || !secondsElement) return;
+            
+            let hours = parseInt(hoursElement.textContent);
+            let minutes = parseInt(minutesElement.textContent);
+            let seconds = parseInt(secondsElement.textContent);
+            
+            seconds--;
+            if (seconds < 0) {
+                seconds = 59;
+                minutes--;
+                
+                if (minutes < 0) {
+                    minutes = 59;
+                    hours--;
+                    
+                    if (hours < 0) {
+                        hours = 23;
+                        minutes = 59;
+                        seconds = 59;
+                    }
+                }
+            }
+            
+            hoursElement.textContent = hours.toString().padStart(2, '0');
+            minutesElement.textContent = minutes.toString().padStart(2, '0');
+            secondsElement.textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Анимация появления элементов при скролле
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { 
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            });
+            
+            document.querySelectorAll('[data-animate]').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        
+        // Прокрутка шапки
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (header) {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }
+        });
+        
+        // Инициализация всего при загрузке страницы
+        window.addEventListener('DOMContentLoaded', () => {
+            setInterval(updateTimer, 1000);
+            initScrollAnimations();
+            
+            // Плавная прокрутка для якорей
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Обработчик AR-кнопки
+            const arButton = document.getElementById('ar-button');
+            if (arButton) {
+                arButton.addEventListener('click', function() {
+                    document.getElementById('ar-section').scrollIntoView({behavior: 'smooth'});
+                });
+            }
+            
+            // Анимация для кнопок скидки
+            const discountBtn = document.querySelector('.pulse');
+            if (discountBtn) {
+                discountBtn.addEventListener('click', function() {
+                    this.innerHTML = '<i class="fas fa-check"></i> Скидка активирована!';
+                    this.classList.remove('pulse');
+                    this.style.backgroundColor = '#4CAF50';
+                });
+            }
+            
+            // Интерактивный краш-тест
+            const crashPhone = document.getElementById('crash-phone');
+            const impactEffect = document.getElementById('impact-effect');
+            const resetTestBtn = document.getElementById('reset-test');
+            
+            crashPhone.addEventListener('click', function() {
+                // Анимация падения
+                this.style.transition = 'transform 0.5s ease';
+                this.style.transform = 'translate(50px, 400px) rotate(45deg)';
+                
+                // Эффект удара
+                setTimeout(() => {
+                    impactEffect.style.display = 'block';
+                    impactEffect.style.left = 'calc(50% + 50px)';
+                    impactEffect.style.top = '400px';
+                    
+                    // Сообщение об успешной защите
+                    setTimeout(() => {
+                        alert('Телефон защищен! Покрытие ProBron выдержало удар!');
+                    }, 500);
+                }, 500);
+            });
+            
+            resetTestBtn.addEventListener('click', function() {
+                crashPhone.style.transition = 'transform 0.5s ease';
+                crashPhone.style.transform = 'translateX(-50%)';
+                impactEffect.style.display = 'none';
+            });
+            
+            // Инициализация 3D модели телефона
+            initPhone3D();
+            
+            // ПЕРЕРАБОТАННЫЙ КОД ДЛЯ ИНТЕРАКТИВНОЙ КАРТЫ ЗАЩИТЫ
+            let currentLayer = 4;
+            const layers = document.querySelectorAll('.layer');
+            const particlesContainer = document.getElementById('particles-container');
+            let autoShowInterval = null;
+            
+            // Функция для создания частиц
+            function createParticles(x, y, color, count = 30) {
+                for (let i = 0; i < count; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    particle.style.left = `${x}px`;
+                    particle.style.top = `${y}px`;
+                    particle.style.backgroundColor = color;
+                    particle.style.setProperty('--x', (Math.random() - 0.5) * 200);
+                    particle.style.setProperty('--y', (Math.random() - 0.5) * 200);
+                    particle.style.setProperty('--size', Math.random() * 5 + 2);
+                    particle.style.animation = `particleMove ${Math.random() * 2 + 1}s ease-out forwards`;
+                    
+                    particlesContainer.appendChild(particle);
+                    
+                    // Удаление частиц после анимации
+                    setTimeout(() => {
+                        if (particle.parentNode === particlesContainer) {
+                            particle.remove();
+                        }
+                    }, 1000);
+                }
+            }
+            
+            // Анимация движения частиц (добавим в стили)
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes particleMove {
+                    0% { 
+                        opacity: 1;
+                        transform: translate(0, 0) scale(1);
+                    }
+                    100% { 
+                        opacity: 0;
+                        transform: translate(var(--x), var(--y)) scale(0);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Обновление слоев с анимацией
+            function updateLayers() {
+                layers.forEach(layer => {
+                    const layerNum = parseInt(layer.getAttribute('data-layer'));
+                    
+                    if (layerNum === currentLayer) {
+                        layer.classList.add('active');
+                        layer.classList.add('pulse-layer');
+                    } else {
+                        layer.classList.remove('active');
+                        layer.classList.remove('pulse-layer');
+                    }
+                    
+                    // Обновление Z-позиции
+                    const z = (currentLayer - layerNum) * 40;
+                    layer.style.setProperty('--z', `${z}px`);
+                });
+                
+                // Эффект частиц
+                const activeLayer = document.querySelector('.layer.active');
+                if (activeLayer) {
+                    const rect = activeLayer.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    createParticles(centerX, centerY, getLayerColor(currentLayer));
+                }
+            }
+            
+            // Получение цвета для слоя
+            function getLayerColor(layerNum) {
+                const colors = [
+                    '#4a00e0', // Фиолетовый
+                    '#00f2fe', // Голубой
+                    '#ff6b4a', // Оранжевый
+                    '#8e2de2'  // Пурпурный
+                ];
+                return colors[layerNum - 1] || '#ffffff';
+            }
+            
+            // Обработчики кнопок
+            document.getElementById('layer-up').addEventListener('click', () => {
+                if (currentLayer < 4) currentLayer++;
+                updateLayers();
+                playSound('up');
+            });
+            
+            document.getElementById('layer-down').addEventListener('click', () => {
+                if (currentLayer > 1) currentLayer--;
+                updateLayers();
+                playSound('down');
+            });
+            
+            // Кнопка автопоказа
+            document.getElementById('auto-show').addEventListener('click', function() {
+                if (autoShowInterval) {
+                    clearInterval(autoShowInterval);
+                    autoShowInterval = null;
+                    this.innerHTML = '<i class="fas fa-play"></i> Автопоказ';
+                    playSound('off');
+                } else {
+                    autoShowInterval = setInterval(() => {
+                        currentLayer = currentLayer < 4 ? currentLayer + 1 : 1;
+                        updateLayers();
+                        playSound('switch');
+                    }, 2000);
+                    this.innerHTML = '<i class="fas fa-pause"></i> Стоп';
+                    playSound('on');
+                }
+            });
+            
+            // Шок-эффект
+            document.getElementById('shock-effect').addEventListener('click', function() {
+                const phoneLayers = document.getElementById('phone-layers');
+                phoneLayers.classList.remove('shock-effect');
+                void phoneLayers.offsetWidth; // Trigger reflow
+                phoneLayers.classList.add('shock-effect');
+                
+                // Спецэффекты
+                createShockWave();
+                playSound('shock');
+            });
+            
+            // Создание ударной волны
+            function createShockWave() {
+                const shockWave = document.createElement('div');
+                shockWave.style.position = 'absolute';
+                shockWave.style.top = '50%';
+                shockWave.style.left = '50%';
+                shockWave.style.width = '0';
+                shockWave.style.height = '0';
+                shockWave.style.border = '2px solid rgba(255, 107, 74, 0.8)';
+                shockWave.style.borderRadius = '50%';
+                shockWave.style.transform = 'translate(-50%, -50%)';
+                shockWave.style.zIndex = '15';
+                shockWave.style.pointerEvents = 'none';
+                
+                document.getElementById('phone-layers').appendChild(shockWave);
+                
+                // Анимация
+                let size = 0;
+                const grow = () => {
+                    size += 20;
+                    shockWave.style.width = `${size}px`;
+                    shockWave.style.height = `${size}px`;
+                    shockWave.style.opacity = `${1 - size/500}`;
+                    
+                    if (size < 500) {
+                        requestAnimationFrame(grow);
+                    } else {
+                        shockWave.remove();
+                    }
+                };
+                
+                grow();
+            }
+            
+            // Звуковые эффекты (используем Web Audio API)
+            function playSound(type) {
+                try {
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    
+                    let frequency = 300;
+                    let duration = 0.3;
+                    
+                    switch(type) {
+                        case 'up':
+                            frequency = 400;
+                            break;
+                        case 'down':
+                            frequency = 250;
+                            break;
+                        case 'switch':
+                            frequency = [350, 450, 350];
+                            break;
+                        case 'on':
+                            frequency = [300, 600];
+                            duration = 0.5;
+                            break;
+                        case 'off':
+                            frequency = [600, 300];
+                            duration = 0.5;
+                            break;
+                        case 'shock':
+                            frequency = [100, 800, 200];
+                            duration = 1.0;
+                            break;
+                    }
+                    
+                    gainNode.gain.value = 0.1;
+                    
+                    if (Array.isArray(frequency)) {
+                        oscillator.type = 'sine';
+                        oscillator.frequency.setValueAtTime(frequency[0], audioCtx.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(frequency[1], audioCtx.currentTime + duration/2);
+                        
+                        if (frequency[2]) {
+                            oscillator.frequency.exponentialRampToValueAtTime(frequency[2], audioCtx.currentTime + duration);
+                        }
+                    } else {
+                        oscillator.frequency.value = frequency;
+                    }
+                    
+                    oscillator.start();
+                    
+                    // Fade out
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                    
+                    setTimeout(() => {
+                        oscillator.stop();
+                    }, duration * 1000);
+                } catch (e) {
+                    console.log("Audio error:", e);
+                }
+            }
+            
+            // Клик по слою
+            layers.forEach(layer => {
+                layer.addEventListener('click', function() {
+                    const layerNum = parseInt(this.getAttribute('data-layer'));
+                    currentLayer = layerNum;
+                    updateLayers();
+                    playSound('switch');
+                    
+                    // Анимация при клике
+                    this.classList.remove('pulse-layer');
+                    void this.offsetWidth;
+                    this.classList.add('pulse-layer');
+                });
+            });
+            
+            // Инициализация
+            updateLayers();
+            
+            // Шок-эффект при загрузке
+            setTimeout(() => {
+                document.getElementById('shock-effect').click();
+            }, 1000);
+        });
+        
+        // Инициализация 3D модели телефона
+        function initPhone3D() {
+            const canvas = document.getElementById('phone-3d-canvas');
+            if (!canvas) return;
+            
+            // Создаем сцену, камеру и рендерер
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ 
+                canvas, 
+                antialias: true, 
+                alpha: true,
+                powerPreference: "high-performance"
+            });
+            
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Создаем геометрию телефона
+            const phoneGeometry = new THREE.BoxGeometry(1.8, 3.5, 0.2);
+            const phoneMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x111111,
+                metalness: 0.7,
+                roughness: 0.3,
+                envMapIntensity: 0.5
+            });
+            
+            const phone = new THREE.Mesh(phoneGeometry, phoneMaterial);
+            scene.add(phone);
+            
+            // Создаем экран телефона
+            const screenGeometry = new THREE.BoxGeometry(1.7, 3.3, 0.21);
+            const screenMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x000000,
+                emissive: 0x111111,
+                emissiveIntensity: 0.5
+            });
+            
+            const screen = new THREE.Mesh(screenGeometry, screenMaterial);
+            screen.position.z = 0.105;
+            phone.add(screen);
+            
+            // Создаем пленку
+            const filmGeometry = new THREE.BoxGeometry(1.75, 3.45, 0.01);
+            const filmMaterials = {
+                glossy: new THREE.MeshPhysicalMaterial({ 
+                    color: 0xffffff,
+                    transmission: 0.95,
+                    thickness: 0.1,
+                    roughness: 0.05,
+                    clearcoat: 1.0,
+                    reflectivity: 0.5
+                }),
+                matte: new THREE.MeshPhysicalMaterial({ 
+                    color: 0xffffff,
+                    transmission: 0.85,
+                    roughness: 0.8,
+                    metalness: 0.1,
+                    clearcoat: 0.2
+                }),
+                privacy: new THREE.MeshPhysicalMaterial({ 
+                    color: 0x000033,
+                    transmission: 0.5,
+                    roughness: 0.2,
+                    metalness: 0.2,
+                    emissive: 0x001144,
+                    emissiveIntensity: 0.3,
+                    sheen: 0.5
+                }),
+                sapphire: new THREE.MeshPhysicalMaterial({ 
+                    color: 0xffffff,
+                    transmission: 0.98,
+                    thickness: 0.15,
+                    roughness: 0.01,
+                    clearcoat: 1.0,
+                    reflectivity: 0.8,
+                    ior: 1.78
+                })
+            };
+            
+            let currentFilm = 'glossy';
+            const film = new THREE.Mesh(filmGeometry, filmMaterials.glossy);
+            film.position.z = 0.12;
+            phone.add(film);
+            
+            // Добавляем свет
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+            
+            const backLight = new THREE.DirectionalLight(0x5555ff, 0.5);
+            backLight.position.set(-5, -5, -5);
+            scene.add(backLight);
+            
+            const pointLight = new THREE.PointLight(0x4facfe, 0.7);
+            pointLight.position.set(3, -3, 4);
+            scene.add(pointLight);
+            
+            // Позиционируем камеру
+            camera.position.z = 5;
+            camera.position.y = 1;
+            
+            // Анимация
+            let rotationSpeed = 0.005;
+            let autoRotate = true;
+            
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                if (autoRotate) {
+                    phone.rotation.y += rotationSpeed;
+                }
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Вращение мышью
+            let isDragging = false;
+            let previousX = 0;
+            let previousY = 0;
+            
+            canvas.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousX = e.clientX;
+                previousY = e.clientY;
+                autoRotate = false;
+            });
+            
+            canvas.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const deltaX = e.clientX - previousX;
+                    const deltaY = e.clientY - previousY;
+                    
+                    phone.rotation.y += deltaX * 0.01;
+                    phone.rotation.x += deltaY * 0.01;
+                    
+                    previousX = e.clientX;
+                    previousY = e.clientY;
+                }
+            });
+            
+            canvas.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            canvas.addEventListener('mouseleave', () => {
+                isDragging = false;
+            });
+            
+            // Для мобильных устройств
+            canvas.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                previousX = e.touches[0].clientX;
+                previousY = e.touches[0].clientY;
+                autoRotate = false;
+                e.preventDefault();
+            }, { passive: false });
+            
+            canvas.addEventListener('touchmove', (e) => {
+                if (isDragging) {
+                    const deltaX = e.touches[0].clientX - previousX;
+                    const deltaY = e.touches[0].clientY - previousY;
+                    
+                    phone.rotation.y += deltaX * 0.01;
+                    phone.rotation.x += deltaY * 0.01;
+                    
+                    previousX = e.touches[0].clientX;
+                    previousY = e.touches[0].clientY;
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            canvas.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+            
+            // Кнопка сброса вида
+            const resetViewBtn = document.getElementById('reset-view');
+            if (resetViewBtn) {
+                resetViewBtn.addEventListener('click', () => {
+                    phone.rotation.x = 0;
+                    phone.rotation.y = 0;
+                    autoRotate = true;
+                });
+            }
+            
+            // Кнопка AR-просмотра
+            const arViewBtn = document.getElementById('ar-view');
+            if (arViewBtn) {
+                arViewBtn.addEventListener('click', () => {
+                    alert('Наведите камеру вашего устройства на эту страницу, чтобы увидеть телефон в вашем окружении');
+                    
+                    // Симуляция AR
+                    const arOverlay = document.createElement('div');
+                    arOverlay.style.position = 'fixed';
+                    arOverlay.style.top = '0';
+                    arOverlay.style.left = '0';
+                    arOverlay.style.width = '100%';
+                    arOverlay.style.height = '100%';
+                    arOverlay.style.background = 'rgba(0,0,0,0.9)';
+                    arOverlay.style.zIndex = '10000';
+                    arOverlay.style.display = 'flex';
+                    arOverlay.style.flexDirection = 'column';
+                    arOverlay.style.justifyContent = 'center';
+                    arOverlay.style.alignItems = 'center';
+                    arOverlay.style.color = 'white';
+                    arOverlay.innerHTML = `
+                        <h2>AR-примерка</h2>
+                        <p>Перемещайте телефон в пространстве с помощью пальцев</p>
+                        <div style="width: 300px; height: 500px; background: rgba(255,255,255,0.1); border-radius: 30px; margin: 20px; position: relative;">
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 350px; background: #333; border-radius: 20px; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold;">ProBron</div>
+                        </div>
+                        <button id="close-ar" style="background: var(--gradient); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-weight: bold; margin-top: 20px; cursor: pointer;">Закрыть AR</button>
+                    `;
+                    
+                    document.body.appendChild(arOverlay);
+                    
+                    document.getElementById('close-ar').addEventListener('click', () => {
+                        document.body.removeChild(arOverlay);
+                    });
+                });
+            }
+            
+            // Переключение типа пленки
+            const filmButtons = document.querySelectorAll('.film-type button');
+            filmButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Убираем активный класс со всех кнопок
+                    filmButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей кнопке
+                    button.classList.add('active');
+                    
+                    // Меняем материал пленки
+                    const filmType = button.getAttribute('data-film');
+                    currentFilm = filmType;
+                    
+                    // Анимация нанесения пленки
+                    film.material = filmMaterials[filmType];
+                    film.classList.remove('applying-film');
+                    void film.offsetWidth; // Trigger reflow
+                    film.classList.add('applying-film');
+                });
+            });
+            
+            // Реакция на изменение размера окна
+            window.addEventListener('resize', () => {
+                camera.aspect = canvas.clientWidth / canvas.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            });
+        }
+    </script>
+</body>
+</html>
